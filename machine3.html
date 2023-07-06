@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Makine 3 - İş Planı</title>
+    <style>
+        /* CSS ile stil tanımlamaları */
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .job-details {
+            margin-top: 20px;
+        }
+
+        .pdf-container {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .back-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Makine 3 - İş Planı</h1>
+
+    <div class="job-details">
+        <h2>İş Detayları</h2>
+        <p><strong>İşin Adı:</strong> <span id="job-name"></span></p>
+        <p><strong>İş Numarası:</strong> <span id="job-number"></span></p>
+        <p><strong>Açıklama:</strong> <span id="job-description"></span></p>
+        <p><strong>Operatör İsmi:</strong> <span id="operator-name"></span></p>
+    </div>
+
+    <div class="pdf-container">
+        <h2>PDF Dosyası</h2>
+        <iframe id="pdf-viewer" src="" width="100%" height="600"></iframe>
+    </div>
+
+    <div class="back-button">
+        <a href="index.html">Ana Sayfa'ya Dön</a>
+    </div>
+
+    <script>
+        // JavaScript ile URL parametrelerini okuyarak iş planı sayfasını doldurma
+        var urlParams = new URLSearchParams(window.location.search);
+
+        document.getElementById('job-name').textContent = urlParams.get('jobName');
+        document.getElementById('job-number').textContent = urlParams.get('jobNumber');
+        document.getElementById('job-description').textContent = urlParams.get('jobDescription');
+        document.getElementById('operator-name').textContent = urlParams.get('operatorName');
+
+        var pdfFile = urlParams.get('pdfFile');
+        if (pdfFile) {
+            document.getElementById('pdf-viewer').src = pdfFile;
+        }
+    </script>
+</body>
+</html>

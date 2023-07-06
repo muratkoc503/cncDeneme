@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <title>İş Planı Uygulaması</title>
+  <style>
+    /* CSS ile stil tanımlamaları */
+    body {
+      font-family: Arial, sans-serif;
+    }
+    h1 {
+      text-align: center;
+    }
+    .machine-link {
+      display: block;
+      margin-bottom: 10px;
+    }
+    .form-container {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    .form-group {
+      margin-bottom: 10px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: bold;
+    }
+    .form-group input[type="text"],
+    .form-group select {
+      width: 100%;
+      padding: 5px;
+    }
+    .form-group textarea {
+      width: 100%;
+      padding: 5px;
+      height: 100px;
+    }
+    .form-group .file-input {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .form-group .file-input input[type="file"] {
+      display: none;
+    }
+    .form-group .file-input-label {
+      display: inline-block;
+      padding: 5px 10px;
+      background-color: #4CAF50;
+      color: #fff;
+      cursor: pointer;
+    }
+    .pdf-container {
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>İş Planı Uygulaması</h1>
+
+  <div class="form-container">
+    <h2>Ana Sayfa</h2>
+    <div class="form-group">
+      <label for="machine-select">Makine Seçin:</label>
+      <select id="machine-select">
+        <option value="machine1">Makine 1</option>
+        <option value="machine2">Makine 2</option>
+        <option value="machine3">Makine 3</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="job-name">İşin Adı:</label>
+      <input type="text" id="job-name">
+    </div>
+    <div class="form-group">
+      <label for="job-number">İş Numarası:</label>
+      <input type="text" id="job-number">
+    </div>
+    <div class="form-group">
+      <label for="job-description">Açıklama:</label>
+      <textarea id="job-description"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="operator-name">Operatör İsmi:</label>
+      <input type="text" id="operator-name">
+    </div>
+    <div class="form-group">
+      <label for="pdf-file">PDF Dosyası:</label>
+      <div class="file-input">
+        <input type="file" id="pdf-file" accept=".pdf">
+        <label class="file-input-label" for="pdf-file">Dosya Seç</label>
+      </div>
+    </div>
+    <button onclick="createJobPlan()">İş Planı Oluştur</button>
+  </div>
+
+  <div id="machine1" class="machine-link"></div>
+  <div id="machine2" class="machine-link"></div>
+  <div id="machine3" class="machine-link"></div>
+
+  <script>
+    // JavaScript ile form verilerini işleyen ve sayfalar arası yönlendirmeyi sağlayan fonksiyonlar
+    function createJobPlan() {
+      var machineSelect = document.getElementById('machine-select');
+      var machineId = machineSelect.value;
+      var jobName = document.getElementById('job-name').value;
+      var jobNumber = document.getElementById('job-number').value;
+      var jobDescription = document.getElementById('job-description').value;
+      var operatorName = document.getElementById('operator-name').value;
+      var pdfFile = document.getElementById('pdf-file').files[0];
+
+      var formData = new FormData();
+      formData.append('jobName', jobName);
+      formData.append('jobNumber', jobNumber);
+      formData.append('jobDescription', jobDescription);
+      formData.append('operatorName', operatorName);
+      formData.append('pdfFile', pdfFile);
+
+      // İş planı sayfasına yönlendirme
+      window.location.href = machineId + '.html?' + serializeFormData(formData);
+    }
+
+    function serializeFormData(formData) {
+      var serialized = '';
+      for (var key of formData.keys()) {
+        serialized += encodeURIComponent(key) + '=' + encodeURIComponent(formData.get(key)) + '&';
+      }
+      return serialized.slice(0, -1); // Son karakter olan '&' işaretini kaldır
+    }
+
+    // İş planı sayfalarına link oluşturma
+    var machineLinks = document.getElementsByClassName('machine-link');
+    for (var i = 0; i < machineLinks.length; i++) {
+      var link = machineLinks[i];
+      link.innerHTML = '<a href="machine' + (i + 1) + '.html">Makine ' + (i + 1) + '</a>';
+    }
+  </script>
+</body>
+</html>
