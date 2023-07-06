@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Giriş Sayfası</title>
+    <style>
+        /* CSS ile stil tanımlamaları */
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+            .form-group label {
+                display: block;
+                font-weight: bold;
+            }
+
+            .form-group input[type="text"],
+            .form-group input[type="password"] {
+                width: 100%;
+                padding: 5px;
+            }
+
+            .form-group .password-toggle {
+                display: inline-block;
+                vertical-align: middle;
+                margin-left: 5px;
+                cursor: pointer;
+            }
+    </style>
+</head>
+<body>
+    <h1>Giriş Sayfası</h1>
+
+    <div class="form-container">
+        <div class="form-group">
+            <label for="username">Kullanıcı Adı:</label>
+            <input type="text" id="username">
+        </div>
+        <div class="form-group">
+            <label for="password">Parola:</label>
+            <input type="password" id="password">
+            <span class="password-toggle" onclick="togglePasswordVisibility()">👁️</span>
+        </div>
+        <button onclick="login()">Giriş Yap</button>
+        <p id="attempts"></p>
+    </div>
+
+    <script>
+        var loginAttempts = 0;
+        var maxAttempts = 3;
+        var blockTime = 300; // 5 dakika engelleme süresi (saniye cinsinden)
+        var blocked = false;
+
+        function login() {
+            if (blocked) {
+                alert('Üst üste 3 defa yanlış giriş yaptınız. Erişim 5 dk engellendi!');
+                return;
+            }
+
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+
+            if (username === 'admin' && password === 'ates1213') {
+                window.location.href = 'mainPanel.html';
+            } else {
+                loginAttempts++;
+
+                if (loginAttempts === maxAttempts) {
+                    blocked = true;
+                    setTimeout(function () {
+                        blocked = false;
+                        loginAttempts = 0;
+                        document.getElementById('attempts').textContent = '';
+                    }, blockTime * 1000);
+                } else {
+                    document.getElementById('attempts').textContent = 'Kalan deneme hakkı: ' + (maxAttempts - loginAttempts);
+                }
+
+                alert('Yanlış kullanıcı adı veya parola!');
+            }
+        }
+
+        function togglePasswordVisibility() {
+            var passwordInput = document.getElementById('password');
+            var passwordToggle = document.querySelector('.password-toggle');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordToggle.textContent = '👁️';
+            } else {
+                passwordInput.type = 'password';
+                passwordToggle.textContent = '👁️';
+            }
+        }
+    </script>
+</body>
+</htmlÜstte verilen HTML kodunda, kullanıcı adı ve parola kontrolü yapıldıktan sonra girişin başarılı olması durumunda `index.html` sayfasına otomatik yönlendirme yapılmaktadır. Yanlış kullanıcı adı veya parola girilmesi durumunda ise giriş hakkı sayısı gösterilmektedir. Eğer üst üste 3 defa yanlış giriş yapılırsa erişim 5 dakika boyunca engellenmektedir. Ayrıca, şifre alanının yanında bir göz simgesi bulunmakta olup, kullanıcı bu simgeye tıklayarak girilen şifreyi görebilmektedir.
+
+Not: Göz simgesinin çalışması için ek bir JavaScript kodu bulunmaktadır. Bu kod, şifre alanının tipini dinamik olarak değiştirmektedir.
